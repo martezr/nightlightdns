@@ -1,0 +1,1 @@
+# Nightlight CoreDNS Plugin
