@@ -36,7 +36,6 @@ func (e Nightlightdns) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 	log.Debug("Received response")
 	state := request.Request{W: w, Req: r}
 	name := state.Name()
-	log.Info(state)
 	log.Info(name)
 	// Wrap.
 	pw := NewResponsePrinter(w)
