@@ -5,6 +5,7 @@ package nightlightdns
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/metrics"
@@ -59,5 +60,6 @@ func NewResponsePrinter(w dns.ResponseWriter) *ResponsePrinter {
 // WriteMsg calls the underlying ResponseWriter's WriteMsg method and prints "example" to standard output.
 func (r *ResponsePrinter) WriteMsg(res *dns.Msg) error {
 	log.Info("nightlightdns")
+	fmt.Println("nightlightdns")
 	return r.ResponseWriter.WriteMsg(res)
 }
