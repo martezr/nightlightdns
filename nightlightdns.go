@@ -10,6 +10,7 @@ import (
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/metrics"
 	clog "github.com/coredns/coredns/plugin/pkg/log"
+	"github.com/coredns/coredns/request"
 
 	"github.com/miekg/dns"
 )
@@ -33,7 +34,10 @@ func (e Nightlightdns) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 
 	// Debug log that we've have seen the query. This will only be shown when the debug plugin is loaded.
 	log.Debug("Received response")
-
+	state := request.Request{W: w, Req: r}
+	name := state.Name()
+	log.Info(state)
+	log.Info(name)
 	// Wrap.
 	pw := NewResponsePrinter(w)
 
