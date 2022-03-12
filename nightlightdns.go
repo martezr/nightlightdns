@@ -5,7 +5,9 @@ package nightlightdns
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/metrics"
@@ -14,6 +16,14 @@ import (
 
 	"github.com/miekg/dns"
 )
+
+type DNSRecords struct {
+	Records []DNSRecord `json:"records"`
+}
+type DNSRecord struct {
+	Name      string `json:"name"`
+	Ipaddress string `json:"ipaddress"`
+}
 
 // Define log to be a logger with the plugin name in it. This way we can just use log.Info and
 // friends to log.
@@ -37,6 +47,16 @@ func (e Nightlightdns) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 	state := request.Request{W: w, Req: r}
 	name := state.Name()
 	log.Info(name)
+
+	file, _ := ioutil.ReadFile("dns.json")
+
+	data := DNSRecords{}
+
+	_ = json.Unmarshal([]byte(file), &data)
+
+	for _, record := range data.Records {
+		log.Info(record.Ipaddress)
+	}
 	// Wrap.
 	pw := NewResponsePrinter(w)
 
