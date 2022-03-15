@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
+	"strings"
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/metrics"
@@ -72,7 +73,11 @@ func (n Nightlightdns) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 	outip := ""
 	for _, record := range data.Records {
 		log.Info(record.Ipaddress)
-		outip = record.Ipaddress
+		baseName := strings.Split(qname, ".")
+		if record.Name == baseName[0] {
+			log.Info(fmt.Sprintf("Found matching record: %s - %s", baseName, record.Ipaddress))
+			outip = record.Ipaddress
+		}
 	}
 
 	answers = append(answers, &dns.A{
