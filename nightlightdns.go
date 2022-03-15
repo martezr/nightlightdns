@@ -84,6 +84,7 @@ func (n Nightlightdns) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 		},
 		A: net.IP(outip),
 	})
+	log.Info(answers)
 
 	// Export metric with the server label set to the current server handling the request.
 	requestCount.WithLabelValues(metrics.WithServer(ctx)).Inc()
