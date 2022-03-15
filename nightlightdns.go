@@ -82,7 +82,7 @@ func (n Nightlightdns) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dn
 			Class:  dns.ClassINET,
 			Ttl:    30,
 		},
-		A: net.IP(outip),
+		A: net.ParseIP(outip),
 	})
 	log.Info(answers)
 
